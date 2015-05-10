@@ -39,12 +39,12 @@ Let's say you have apache logs that look like this:
 
 ```
 
-To look through the logs 
+To look through the logs you do this:
 ```
 ./grepsql.py SELECT /[0-9.]*/ AS IP, /\\[.*?\\]/ AS Date, /\".*\"/ AS Resource , /\\d\\d\\d/ AS Response FROM access_log WHERE response = 404
 ```
 
-this will process th file 'access_log', parse each line into IP, Date, Resource, and Response values.  It will then filter out all rows where Response is equal to "404".
+this will process th file 'access_log', parse each line into IP, Date, Resource, and Response values.  It will then filter out all rows where Response is not equal to "404".
 
 The output looks like this:
 ```
@@ -52,6 +52,13 @@ The output looks like this:
 "127.0.0.1", "[10/May/2015:14:52:18 +0200]", "\"GET /notfound.html HTTP/1.1\"", "404"
 "127.0.0.1", "[10/May/2015:14:52:25 +0200]", "\"GET /admin.html HTTP/1.1\"", "404"
 "127.0.0.1", "[10/May/2015:14:52:29 +0200]", "\"GET /admin/ HTTP/1.1\"", "404"
+
+```
+
+You can then pipe this into a file for later import and analysis like so:
+
+```
+./grepsql.py "SELECT /[0-9.]*/ AS IP, /\\[.*?\\]/ AS Date, /\".*\"/ AS Resource , /\\d\\d\\d/ AS Response FROM access_log WHERE response = 404" > access_log.csv
 
 ```
 
