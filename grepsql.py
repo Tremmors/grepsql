@@ -67,8 +67,8 @@ def processline(args, regex, line):
             for col in args['select']:
                 val = match.group((col['column']))
                 for condition in args['where']:
-                    if condition['column'] == col['column']:
-                        display = display and compare(val, condition['operator'],condition['compare'])
+                    if condition['column'].lower() == col['column'].lower():
+                        display = display and compare(val, condition['operator'], condition['compare'])
                 row[col['column']] = val
     finally:
         if row and display:
